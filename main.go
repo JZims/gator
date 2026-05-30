@@ -1,9 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	config "gator/internal"
+	"gator/internal/database"
 	"log"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -13,18 +17,27 @@ func main() {
 		log.Fatalf("error reading config: %v", err)
 	}
 
+	db, err := sql.Open("postgres", configFile.DBUrl)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dbQueries := database.New(db)
+
 	s := &state{
-		Config: &configFile,
+		db:  dbQueries,
+		cfg: &configFile,
 	}
 
 	cmds := &commands{
 		options: make(map[string]func(*state, command) error),
 	}
 
+	cmds.register("register", handlerRegister)
 	cmds.register("login", handlerLogin)
 
 	if len(os.Args) < 2 {
-		log.Fatal(err)
+		log.Fatal("Not enough arguments")
 	}
 
 	cmd := command{

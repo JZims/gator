@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 	config "gator/internal"
+	"gator/internal/database"
 )
 
 type state struct {
-	Config *config.Config
+	db  *database.Queries
+	cfg *config.Config
 }
 
 type command struct {

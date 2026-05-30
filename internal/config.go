@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	DBName          string `json:"db_url"`
+	DBUrl           string `json:"db_url"`
 	CurrentUserName string `json:"current_user_name"`
 }
 
