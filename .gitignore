@@ -9,7 +9,6 @@ gator
 coverage.out
 cover.out
 
-
 .DS_Store
 .env
 .env.*
