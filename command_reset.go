@@ -11,6 +11,7 @@ func handlerReset(s *state, c command) error {
 	if err := s.db.DeleteUser(ctx); err != nil {
 		return err
 	}
+
 	fmt.Println("Users successfully reset")
 	return nil
 }

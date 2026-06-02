@@ -10,7 +10,7 @@ import (
 )
 
 const deleteUser = `-- name: DeleteUser :exec
-TRUNCATE TABLE users
+TRUNCATE TABLE users CASCADE
 `
 
 func (q *Queries) DeleteUser(ctx context.Context) error {
