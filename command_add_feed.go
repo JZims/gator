@@ -10,16 +10,12 @@ import (
 	"github.com/google/uuid"
 )
 
-func handlerAddFeed(s *state, cmd command) error {
+func handlerAddFeed(s *state, cmd command, u database.User) error {
 	if len(cmd.Args) < 2 {
 		return fmt.Errorf("addfeed takes two arguments: addfeed <name_of_feed> <feed_url>")
 	}
 
 	ctx := context.Background()
-	user, err := s.db.GetUser(ctx, s.cfg.CurrentUserName)
-	if err != nil {
-		return err
-	}
 
 	url := cmd.Args[1]
 	nullableUrl := sql.NullString{
@@ -39,7 +35,7 @@ func handlerAddFeed(s *state, cmd command) error {
 		UpdatedAt: nullableTime,
 		Name:      cmd.Args[0],
 		Url:       nullableUrl,
-		UserID:    user.ID,
+		UserID:    u.ID,
 	}
 
 	feed, err := s.db.CreateFeed(ctx, newFeed)
@@ -47,6 +43,19 @@ func handlerAddFeed(s *state, cmd command) error {
 		return err
 	}
 	fmt.Printf("%+v\n", feed)
+
+	newFollow := database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		CreatedAt: now,
+		UpdatedAt: now,
+		UserID:    u.ID,
+		FeedID:    feed.ID,
+	}
+
+	_, err = s.db.CreateFeedFollow(ctx, newFollow)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
