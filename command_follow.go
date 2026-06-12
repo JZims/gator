@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"gator/internal/database"
 	"time"
@@ -12,16 +11,10 @@ import (
 
 func handlerFollow(s *state, cmd command, u database.User) error {
 	ctx := context.Background()
-
 	url := cmd.Args[0]
-	nullableUrl := sql.NullString{
-		String: url,
-		Valid:  true,
-	}
-
 	now := time.Now()
 
-	matchedFeed, err := s.db.GetFeedByUrl(ctx, nullableUrl)
+	matchedFeed, err := s.db.GetFeedByUrl(ctx, url)
 	if err != nil {
 		return err
 	}

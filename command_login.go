@@ -11,11 +11,6 @@ func handlerLogin(s *state, cmd command) error {
 		return err
 	}
 
-	// if len(cmd.Args) > 1 {
-	// 	err := fmt.Errorf("Too many arguments given (expected 1)")
-	// 	return err
-	// }
-
 	ctx := context.Background()
 
 	if _, err := s.db.GetUser(ctx, cmd.Args[0]); err != nil {

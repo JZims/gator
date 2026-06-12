@@ -4,7 +4,7 @@ CREATE TABLE feeds (
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     name TEXT UNIQUE NOT NULL, 
-    url TEXT UNIQUE, 
+    url TEXT UNIQUE NOT NULL, 
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 

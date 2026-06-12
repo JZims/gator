@@ -18,10 +18,6 @@ func handlerAddFeed(s *state, cmd command, u database.User) error {
 	ctx := context.Background()
 
 	url := cmd.Args[1]
-	nullableUrl := sql.NullString{
-		String: url,
-		Valid:  true,
-	}
 
 	now := time.Now()
 	nullableTime := sql.NullTime{
@@ -34,7 +30,7 @@ func handlerAddFeed(s *state, cmd command, u database.User) error {
 		CreatedAt: nullableTime,
 		UpdatedAt: nullableTime,
 		Name:      cmd.Args[0],
-		Url:       nullableUrl,
+		Url:       url,
 		UserID:    u.ID,
 	}
 
