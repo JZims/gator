@@ -7,18 +7,13 @@ import (
 	"strconv"
 )
 
-func handlerBrowse(s *state, cmd command) error {
+func handlerBrowse(s *state, cmd command, user database.User) error {
 	limit := "2"
 	if len(cmd.Args) > 1 {
 		limit = cmd.Args[0]
 	}
 
 	limitNum, err := strconv.Atoi(limit)
-	if err != nil {
-		return err
-	}
-
-	user, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
 	if err != nil {
 		return err
 	}
@@ -34,7 +29,7 @@ func handlerBrowse(s *state, cmd command) error {
 	}
 
 	for _, post := range posts {
-		fmt.Printf(post.Description.String)
+		fmt.Printf("%s\n", post.Description.String)
 	}
 	return nil
 }
